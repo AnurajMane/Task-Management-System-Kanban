@@ -1,17 +1,21 @@
-package com.anuraj.kanban.user.entity;
+package com.anuraj.kanban.task.entity;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import com.anuraj.kanban.board.entity.Board;
+import com.anuraj.kanban.task.enums.TaskStatus;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -22,42 +26,47 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users")
+@Table
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Task {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(nullable = false)
-	private String name;
+	private String title;
 	
-	@Column(nullable = false, unique = true)
-	private String email;
+	@Column(length = 3000)
+	private String description;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private TaskStatus status;
 	
 	@Column(nullable = false)
-	private String password;
+	private Integer position;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "board_id")
+	private Board board;
 	
 	private LocalDateTime createdAt;
 	
 	private LocalDateTime updatedAt;
 	
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-	private List<Board> boards;
-	
 	@PrePersist
 	public void onCreate() {
-	    createdAt = LocalDateTime.now();
-	    updatedAt = LocalDateTime.now();
-	}
-
-	@PreUpdate
-	public void onUpdate() {
-	    updatedAt = LocalDateTime.now();
+		createdAt = LocalDateTime.now();
+		updatedAt = LocalDateTime.now();
 	}
 	
+	@PreUpdate
+	public void onUpdate() {
+		updatedAt = LocalDateTime.now();
+	}
 }
