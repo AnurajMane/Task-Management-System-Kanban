@@ -1,16 +1,20 @@
-package com.anuraj.kanban.user.entity;
+package com.anuraj.kanban.board.entity;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.anuraj.kanban.board.entity.Board;
+import com.anuraj.kanban.task.entity.Task;
+import com.anuraj.kanban.user.entity.User;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -22,13 +26,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "users")
+@Table(name = "boards")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class User {
+public class Board {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -36,28 +41,27 @@ public class User {
 	@Column(nullable = false)
 	private String name;
 	
-	@Column(nullable = false, unique = true)
-	private String email;
+	private String description;
 	
-	@Column(nullable = false)
-	private String password;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "owner_id")
+	private User owner;
+	
+	@OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Task> tasks;
 	
 	private LocalDateTime createdAt;
 	
 	private LocalDateTime updatedAt;
 	
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
-	private List<Board> boards;
-	
 	@PrePersist
 	public void onCreate() {
-	    createdAt = LocalDateTime.now();
-	    updatedAt = LocalDateTime.now();
-	}
-
-	@PreUpdate
-	public void onUpdate() {
-	    updatedAt = LocalDateTime.now();
+		createdAt = LocalDateTime.now();
+		updatedAt = LocalDateTime.now();
 	}
 	
+	@PreUpdate
+	public void onUpdate() {
+		updatedAt = LocalDateTime.now();
+	}
 }
