@@ -1,4 +1,10 @@
-function KanbanColumn({ title, tasks = [], onAddTask, }) {
+function KanbanColumn({
+  title,
+  tasks = [],
+  onAddTask,
+  onEditTask,
+  onDeleteTask,
+}) {
   return (
     <div className="rounded-xl bg-slate-800 p-4 min-h-[600px]">
       {/* Header */}
@@ -12,7 +18,7 @@ function KanbanColumn({ title, tasks = [], onAddTask, }) {
         </span>
       </div>
 
-      {/* Add Task Placeholder */}
+      {/* Add Task Button */}
       <button
         onClick={onAddTask}
         className="
@@ -44,15 +50,29 @@ function KanbanColumn({ title, tasks = [], onAddTask, }) {
               border-slate-600
               bg-slate-700
               p-4
-              shadow-sm
-              transition
-              hover:border-blue-500
-              cursor-pointer
             "
           >
-            <h3 className="font-semibold text-white">
-              {task.title}
-            </h3>
+            <div className="flex justify-between">
+              <h3 className="font-semibold text-white">
+                {task.title}
+              </h3>
+
+              <div className="flex gap-2">
+                <button
+                  onClick={() => onEditTask(task)}
+                  className="text-blue-400 text-sm"
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => onDeleteTask(task.id)}
+                  className="text-red-400 text-sm"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
 
             <p className="mt-2 text-sm text-slate-300">
               {task.description}

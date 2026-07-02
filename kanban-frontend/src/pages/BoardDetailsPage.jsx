@@ -9,23 +9,61 @@ import { useState } from "react";
 
 import CreateTaskModal from "../features/tasks/components/CreateTaskModal";
 import { useCreateTask } from "../features/tasks/hooks/useCreateTask";
+import { useUpdateTask } from "../features/tasks/hooks/useUpdateTask";
+import { useDeleteTask } from "../features/tasks/hooks/useDeleteTask";
+import EditTaskModal from "../features/tasks/components/EditTaskModal";
 
 function BoardDetailsPage() {
   const { boardId } = useParams();
 
-  const {
-    data: board,
-    isLoading: boardLoading,
-  } = useBoard(boardId);
+  const [selectedTask, setSelectedTask] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const {
-    data: tasks,
-    isLoading: tasksLoading,
-  } = useBoardTasks(boardId);
+  const updateTaskMutation = useUpdateTask();
+  const deleteTaskMutation = useDeleteTask();
+
+  const {data: board, isLoading: boardLoading, } = useBoard(boardId);
+
+  const {data: tasks, isLoading: tasksLoading, } = useBoardTasks(boardId);
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
   const createTaskMutation = useCreateTask();
+
+  
+
+  const handleCreateTask = (taskData) => {
+    createTaskMutation.mutate({
+      boardId,
+      taskData,
+    });
+  };
+
+  
+
+  const handleEditTask = (task) => {
+    setSelectedTask(task);
+    setIsEditModalOpen(true);
+  };
+
+  const handleUpdateTask = (taskData) => {
+    updateTaskMutation.mutate({
+      taskId: selectedTask.id,
+      taskData,
+    },
+  {
+    onSuccess: () => {
+      setIsEditModalOpen(false);
+      setSelectedTask(null);
+    }
+  });
+  };
+
+  const handleDeleteTask = (taskId) => {
+    if(window.confirm("Delete task?")){
+      deleteTaskMutation.mutate(taskId);
+    }
+  };
 
   if (boardLoading || tasksLoading) {
     return (
@@ -37,13 +75,6 @@ function BoardDetailsPage() {
     );
   }
 
-  const handleCreateTask = (taskData) => {
-    createTaskMutation.mutate({
-      boardId,
-      taskData,
-    });
-  };
-
   return (
     <div className="min-h-screen bg-slate-900 p-6">
       <CreateTaskModal
@@ -52,6 +83,12 @@ function BoardDetailsPage() {
           setIsCreateModalOpen(false)
         }
         onCreate={handleCreateTask}
+      />
+      <EditTaskModal
+          isOpen={isEditModalOpen}
+          task={selectedTask}
+          onClose={() => setIsEditModalOpen(false)}
+          onUpdate={handleUpdateTask}
       />
       <div className="mb-8">
         <Link
@@ -76,36 +113,48 @@ function BoardDetailsPage() {
           title="BACKLOG"
           tasks={tasks?.backlog || []}
           onAddTask={() => setIsCreateModalOpen(true)}
+          onEditTask={handleEditTask}
+          onDeleteTask={handleDeleteTask}
         />
 
         <KanbanColumn
           title="READY FOR DEVELOPMENT"
           tasks={tasks?.readyForDevelopment || []}
           onAddTask={() => {}}
+          onEditTask={handleEditTask}
+          onDeleteTask={handleDeleteTask}
         />
 
         <KanbanColumn
           title="IN PROGRESS"
           tasks={tasks?.inProgress || []}
           onAddTask={() => {}}
+          onEditTask={handleEditTask}
+          onDeleteTask={handleDeleteTask}
         />
 
         <KanbanColumn
           title="IN REVIEW"
           tasks={tasks?.inReview || []}
           onAddTask={() => {}}
+          onEditTask={handleEditTask}
+          onDeleteTask={handleDeleteTask}
         />
 
         <KanbanColumn
           title="BLOCKED"
           tasks={tasks?.blocked || []}
           onAddTask={() => {}}
+          onEditTask={handleEditTask}
+          onDeleteTask={handleDeleteTask}
         />
 
         <KanbanColumn
           title="DONE"
           tasks={tasks?.done || []}
           onAddTask={() => {}}
+          onEditTask={handleEditTask}
+          onDeleteTask={handleDeleteTask}
         />
       </div>
     </div>
