@@ -1,11 +1,17 @@
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import SortableTaskCard from "./SortableTaskCard";
+import DroppableColumn from "./DroppableColumn";
+
 function KanbanColumn({
   title,
   tasks = [],
+  columnId,
   onAddTask,
   onEditTask,
   onDeleteTask,
 }) {
   return (
+    <DroppableColumn id={columnId}>
     <div className="rounded-xl bg-slate-800 p-4 min-h-[600px]">
       {/* Header */}
       <div className="mb-4 flex items-center justify-between">
@@ -40,47 +46,31 @@ function KanbanColumn({
       </button>
 
       {/* Tasks */}
-      <div className="space-y-3">
-        {tasks.map((task) => (
-          <div
-            key={task.id}
-            className="
-              rounded-xl
-              border
-              border-slate-600
-              bg-slate-700
-              p-4
-            "
-          >
-            <div className="flex justify-between">
-              <h3 className="font-semibold text-white">
-                {task.title}
-              </h3>
-
-              <div className="flex gap-2">
-                <button
-                  onClick={() => onEditTask(task)}
-                  className="text-blue-400 text-sm"
-                >
-                  Edit
-                </button>
-
-                <button
-                  onClick={() => onDeleteTask(task.id)}
-                  className="text-red-400 text-sm"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-
-            <p className="mt-2 text-sm text-slate-300">
-              {task.description}
-            </p>
-          </div>
-        ))}
-      </div>
+      <SortableContext
+        items={tasks.map(
+          (task) => task.id
+        )}
+        strategy={
+          verticalListSortingStrategy
+        }
+      >
+        <div className="space-y-3">
+          {tasks.map((task) => (
+            <SortableTaskCard
+              key={task.id}
+              task={task}
+              onEditTask={
+                onEditTask
+              }
+              onDeleteTask={
+                onDeleteTask
+              }
+            />
+          ))}
+        </div>
+      </SortableContext>
     </div>
+    </DroppableColumn>
   );
 }
 

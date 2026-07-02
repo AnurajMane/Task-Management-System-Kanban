@@ -30,3 +30,10 @@ export const deleteTask = async (taskId) => {
     `/tasks/${taskId}`
   );
 };
+
+export const moveTask = async ({taskId, targetStatus, targetPosition,}) => {
+  const response = await api.patch(`/tasks/${taskId}/move`,
+    {targetStatus, targetPosition, }
+  );
+  return response.data;
+};
