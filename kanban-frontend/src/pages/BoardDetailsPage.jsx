@@ -35,16 +35,19 @@ function BoardDetailsPage() {
 
   const moveTaskMutation = useMoveTask();
 
-  
+  const [selectedStatus, setSelectedStatus] = useState("BACKLOG");
+  const handleAddTask = (status) => {
+    setSelectedStatus(status);
+    setIsCreateModalOpen(true);
+  }
 
   const handleCreateTask = (taskData) => {
     createTaskMutation.mutate({
-      boardId,
+      boardId: Number(boardId),
       taskData,
+      status: selectedStatus,
     });
   };
-
-  
 
   const handleEditTask = (task) => {
     setSelectedTask(task);
@@ -100,6 +103,8 @@ function BoardDetailsPage() {
     const { active, over } = event;
 
     if (!over) return;
+
+    if(active.id === over.id) return;
 
     const task = findTaskById(active.id);
 
@@ -199,7 +204,7 @@ function BoardDetailsPage() {
             title="BACKLOG"
             tasks={tasks?.backlog || []}
             columnId="BACKLOG"
-            onAddTask={() => setIsCreateModalOpen(true)}
+            onAddTask={() => handleAddTask("BACKLOG")}
             onEditTask={handleEditTask}
             onDeleteTask={handleDeleteTask}
           />
@@ -208,7 +213,7 @@ function BoardDetailsPage() {
             title="READY FOR DEVELOPMENT"
             tasks={tasks?.readyForDevelopment || []}
             columnId="READY_FOR_DEVELOPMENT"
-            onAddTask={() => setIsCreateModalOpen(true)}
+            onAddTask={() => handleAddTask("READY_FOR_DEVELOPMENT")}
             onEditTask={handleEditTask}
             onDeleteTask={handleDeleteTask}
           />
@@ -217,7 +222,7 @@ function BoardDetailsPage() {
             title="IN PROGRESS"
             tasks={tasks?.inProgress || []}
             columnId="IN_PROGRESS"
-            onAddTask={() => setIsCreateModalOpen(true)}
+            onAddTask={() => handleAddTask("IN_PROGRESS")}
             onEditTask={handleEditTask}
             onDeleteTask={handleDeleteTask}
           />
@@ -226,7 +231,7 @@ function BoardDetailsPage() {
             title="IN REVIEW"
             tasks={tasks?.inReview || []}
             columnId="IN_REVIEW"
-            onAddTask={() => setIsCreateModalOpen(true)}
+            onAddTask={() => handleAddTask("IN_REVIEW")}
             onEditTask={handleEditTask}
             onDeleteTask={handleDeleteTask}
           />
@@ -235,7 +240,7 @@ function BoardDetailsPage() {
             title="BLOCKED"
             tasks={tasks?.blocked || []}
             columnId="BLOCKED"
-            onAddTask={() => setIsCreateModalOpen(true)}
+            onAddTask={() => handleAddTask("BLOCKED")}
             onEditTask={handleEditTask}
             onDeleteTask={handleDeleteTask}
           />
@@ -244,7 +249,7 @@ function BoardDetailsPage() {
             title="DONE"
             tasks={tasks?.done || []}
             columnId="DONE"
-            onAddTask={() => setIsCreateModalOpen(true)}
+            onAddTask={() => handleAddTask("DONE")}
             onEditTask={handleEditTask}
             onDeleteTask={handleDeleteTask}
           />

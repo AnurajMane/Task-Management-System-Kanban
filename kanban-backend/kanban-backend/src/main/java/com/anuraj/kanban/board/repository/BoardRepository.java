@@ -10,4 +10,5 @@ import com.anuraj.kanban.user.entity.User;
 public interface BoardRepository extends JpaRepository<Board, Long>{
 
 	List<Board> findByOwner(User user);
+	int countByOwner(User user);
 }

@@ -1,9 +1,11 @@
 package com.anuraj.kanban.task.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.anuraj.kanban.board.entity.Board;
 import com.anuraj.kanban.task.enums.TaskStatus;
+import com.anuraj.kanban.task.model.TaskPriority;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -48,12 +49,18 @@ public class Task {
 	@Column(nullable = false)
 	private TaskStatus status;
 	
+	@Enumerated(EnumType.STRING)
+	private TaskPriority priority;
+	
 	@Column(nullable = false)
 	private Integer position;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id")
 	private Board board;
+	
+	@Column(name = "due_date")
+	private LocalDate dueDate;
 	
 	private LocalDateTime createdAt;
 	
