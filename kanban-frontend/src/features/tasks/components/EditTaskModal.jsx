@@ -5,10 +5,13 @@ function EditTaskModal({isOpen, task, onClose, onUpdate}){
 
     const [description, setDescription] = useState("");
 
+    const [dueDate, setDueDate] = useState(task?.dueDate || "");
+
     useEffect(() => {
         if(task){
             setTitle(task.title);
             setDescription(task.description || "");
+            setDueDate(task?.dueDate || "");
         }
     }, [task]);
 

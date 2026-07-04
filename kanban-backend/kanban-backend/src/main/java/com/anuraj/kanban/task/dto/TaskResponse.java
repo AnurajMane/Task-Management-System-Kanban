@@ -1,5 +1,7 @@
 package com.anuraj.kanban.task.dto;
 
+import java.time.LocalDate;
+
 import com.anuraj.kanban.task.enums.TaskStatus;
 
 import lombok.Builder;
@@ -15,4 +17,5 @@ public class TaskResponse {
 	private TaskStatus status;
 	private Integer position;
 	private Long boardId;
+	private LocalDate dueDate;
 }

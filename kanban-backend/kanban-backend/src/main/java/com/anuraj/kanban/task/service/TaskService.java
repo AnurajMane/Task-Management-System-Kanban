@@ -41,6 +41,7 @@ public class TaskService {
                 .status(TaskStatus.BACKLOG)
                 .position(nextPosition)
                 .board(board)
+                .dueDate(request.getDueDate())
                 .build();
 
         Task savedTask = taskRepository.save(task);
@@ -49,6 +50,7 @@ public class TaskService {
                 .id(savedTask.getId())
                 .title(savedTask.getTitle())
                 .description(savedTask.getDescription())
+                .dueDate(savedTask.getDueDate())
                 .status(savedTask.getStatus())
                 .position(savedTask.getPosition())
                 .boardId(savedTask.getBoard().getId())
@@ -79,6 +81,7 @@ public class TaskService {
 				.id(task.getId())
 				.title(task.getTitle())
 				.description(task.getDescription())
+				.dueDate(task.getDueDate())
 				.status(task.getStatus())
 				.position(task.getPosition())
 				.boardId(task.getBoard().getId())
@@ -148,6 +151,7 @@ public class TaskService {
 		Task task = getTaskForCurrentUser(taskId, authentication);
 		task.setTitle(request.getTitle());
 		task.setDescription(request.getDescription());
+		task.setDueDate(request.getDueDate());
 		
 		Task updatedTask = taskRepository.save(task);
 		

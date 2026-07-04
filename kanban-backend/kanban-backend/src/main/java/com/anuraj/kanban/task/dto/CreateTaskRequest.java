@@ -1,5 +1,7 @@
 package com.anuraj.kanban.task.dto;
 
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -10,4 +12,6 @@ public class CreateTaskRequest {
 	private String title;
 	
 	private String description;
+	
+	private LocalDate dueDate;
 }

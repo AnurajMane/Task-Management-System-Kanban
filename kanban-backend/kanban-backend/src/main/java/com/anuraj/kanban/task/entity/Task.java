@@ -1,5 +1,6 @@
 package com.anuraj.kanban.task.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import com.anuraj.kanban.board.entity.Board;
@@ -14,7 +15,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -54,6 +54,9 @@ public class Task {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "board_id")
 	private Board board;
+	
+	@Column(name = "due_date")
+	private LocalDate dueDate;
 	
 	private LocalDateTime createdAt;
 	

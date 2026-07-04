@@ -44,8 +44,6 @@ function BoardDetailsPage() {
     });
   };
 
-  
-
   const handleEditTask = (task) => {
     setSelectedTask(task);
     setIsEditModalOpen(true);
@@ -100,6 +98,8 @@ function BoardDetailsPage() {
     const { active, over } = event;
 
     if (!over) return;
+
+    if(active.id === over.id) return;
 
     const task = findTaskById(active.id);
 

@@ -5,16 +5,24 @@ function CreateTaskModal({
 }){
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    const [dueDate, setDueDate] = useState("");
 
     if(!isOpen) return null;
 
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        onCreate({title, description});
+        // console.log({
+        //   title,
+        //   description,
+        //   dueDate,
+        // });
+
+        onCreate({title, description, dueDate});
 
         setTitle("");
         setDescription("");
+        setDueDate("")
         onClose();
     };
 
@@ -51,6 +59,23 @@ function CreateTaskModal({
             className="w-full rounded bg-slate-700 p-3 text-white"
             rows={4}
           />
+          {/* due date */}
+          <div>
+            <label className="mb-2 block text-sm text-slate-300">
+              Due Date
+            </label>
+
+            <input
+              type="date"
+              value={dueDate}
+              onChange={(e) =>
+                setDueDate(
+                  e.target.value
+                )
+              }
+              className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 text-white"
+            />
+          </div>
 
           <div className="flex justify-end gap-2">
             <button
