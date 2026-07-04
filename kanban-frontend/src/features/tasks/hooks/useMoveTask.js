@@ -11,6 +11,7 @@ export const useMoveTask = () => {
             queryCilent.invalidateQueries({
                 queryKey: ["tasks"],
             });
+            toast.success("Task moved");
         },
     });
 };
