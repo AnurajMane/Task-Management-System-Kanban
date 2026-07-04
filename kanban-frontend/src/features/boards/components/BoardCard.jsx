@@ -7,7 +7,11 @@ function BoardCard({board, onDelete, onEdit}){
     //     onEdit,
     // });
     return(
-        <div className="rounded-xl border border-slate-700 bg-slate-800 p-5 shadow">
+        <div className="rounded-xl border border-slate-700 bg-slate-800 p-5 shadow transition-all
+    duration-200
+    hover:scale-[1.02]
+    hover:border-blue-500
+    hover:shadow-lg">
             <div className="flex items-start justify-between">
                 <div>
                     <h3 className="text-lg font-semibold text-white">

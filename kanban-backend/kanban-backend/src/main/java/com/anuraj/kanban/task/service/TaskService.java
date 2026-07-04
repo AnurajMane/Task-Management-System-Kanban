@@ -15,6 +15,7 @@ import com.anuraj.kanban.task.dto.TaskResponse;
 import com.anuraj.kanban.task.dto.UpdateTaskRequest;
 import com.anuraj.kanban.task.entity.Task;
 import com.anuraj.kanban.task.enums.TaskStatus;
+import com.anuraj.kanban.task.model.TaskPriority;
 import com.anuraj.kanban.task.repository.TaskRepository;
 import com.anuraj.kanban.user.entity.User;
 import com.anuraj.kanban.user.repository.UserRepository;
@@ -32,16 +33,18 @@ public class TaskService {
 	@Transactional
 	public TaskResponse createTask(Long boardId, CreateTaskRequest request, Authentication authentication) {
 		Board board = getBoardForCurrentUser(boardId, authentication);
-		
-		int nextPosition = (int) taskRepository.countByBoardAndStatus(board, TaskStatus.BACKLOG);
+		System.out.println("Status from request = " + request.getStatus());
+		TaskStatus status = request.getStatus() != null ? request.getStatus() : TaskStatus.BACKLOG;
+		int nextPosition = (int) taskRepository.countByBoardAndStatus(board, status);
 		
 		Task task = Task.builder()
                 .title(request.getTitle())
                 .description(request.getDescription())
-                .status(TaskStatus.BACKLOG)
+                .status(status)
                 .position(nextPosition)
                 .board(board)
                 .dueDate(request.getDueDate())
+                .priority(request.getPriority() != null ? request.getPriority() : TaskPriority.NO_PRIORITY)
                 .build();
 
         Task savedTask = taskRepository.save(task);
@@ -54,6 +57,7 @@ public class TaskService {
                 .status(savedTask.getStatus())
                 .position(savedTask.getPosition())
                 .boardId(savedTask.getBoard().getId())
+                .priority(savedTask.getPriority())
                 .build();
 	}
 	
@@ -77,6 +81,7 @@ public class TaskService {
 	}
 	
 	private TaskResponse mapToResponse(Task task) {
+//		System.out.println(task.getPriority());
 		return TaskResponse.builder()
 				.id(task.getId())
 				.title(task.getTitle())
@@ -85,6 +90,7 @@ public class TaskService {
 				.status(task.getStatus())
 				.position(task.getPosition())
 				.boardId(task.getBoard().getId())
+				.priority(task.getPriority())
 				.build();
 	}
 	
@@ -152,6 +158,7 @@ public class TaskService {
 		task.setTitle(request.getTitle());
 		task.setDescription(request.getDescription());
 		task.setDueDate(request.getDueDate());
+		task.setPriority(request.getPriority());
 		
 		Task updatedTask = taskRepository.save(task);
 		

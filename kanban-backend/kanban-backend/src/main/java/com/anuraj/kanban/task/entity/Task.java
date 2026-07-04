@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.anuraj.kanban.board.entity.Board;
 import com.anuraj.kanban.task.enums.TaskStatus;
+import com.anuraj.kanban.task.model.TaskPriority;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -47,6 +48,9 @@ public class Task {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private TaskStatus status;
+	
+	@Enumerated(EnumType.STRING)
+	private TaskPriority priority;
 	
 	@Column(nullable = false)
 	private Integer position;

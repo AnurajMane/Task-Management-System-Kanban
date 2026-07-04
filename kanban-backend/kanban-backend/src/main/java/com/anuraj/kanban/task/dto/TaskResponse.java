@@ -3,6 +3,7 @@ package com.anuraj.kanban.task.dto;
 import java.time.LocalDate;
 
 import com.anuraj.kanban.task.enums.TaskStatus;
+import com.anuraj.kanban.task.model.TaskPriority;
 
 import lombok.Builder;
 import lombok.Data;
@@ -18,4 +19,5 @@ public class TaskResponse {
 	private Integer position;
 	private Long boardId;
 	private LocalDate dueDate;
+	private TaskPriority priority;
 }

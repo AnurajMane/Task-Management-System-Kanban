@@ -2,6 +2,9 @@ package com.anuraj.kanban.task.dto;
 
 import java.time.LocalDate;
 
+import com.anuraj.kanban.task.enums.TaskStatus;
+import com.anuraj.kanban.task.model.TaskPriority;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
@@ -14,4 +17,8 @@ public class CreateTaskRequest {
 	private String description;
 	
 	private LocalDate dueDate;
+	
+	private TaskPriority priority;
+	
+	private TaskStatus status;
 }

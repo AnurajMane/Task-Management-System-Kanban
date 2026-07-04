@@ -6,6 +6,7 @@ function CreateTaskModal({
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
     const [dueDate, setDueDate] = useState("");
+    const [priority, setPriority] = useState("NO_PRIORITY");
 
     if(!isOpen) return null;
 
@@ -18,11 +19,12 @@ function CreateTaskModal({
         //   dueDate,
         // });
 
-        onCreate({title, description, dueDate});
+        onCreate({title, description, dueDate, priority});
 
         setTitle("");
         setDescription("");
-        setDueDate("")
+        setDueDate("");
+        setPriority("");
         onClose();
     };
 
@@ -76,6 +78,23 @@ function CreateTaskModal({
               className="w-full rounded-lg border border-slate-700 bg-slate-900 p-3 text-white"
             />
           </div>
+          <div>
+          <label className="mb-2 block text-sm text-slate-300">
+            Priority
+          </label>
+
+          <select
+            value={priority}
+            onChange={(e) =>
+              setPriority(e.target.value)
+            }
+            className="w-full rounded-lg bg-slate-800 p-2 text-white"
+          >
+            <option value="LOW">LOW</option>
+            <option value="MEDIUM">MEDIUM</option>
+            <option value="HIGH">HIGH</option>
+          </select>
+        </div>
 
           <div className="flex justify-end gap-2">
             <button

@@ -56,11 +56,53 @@ const getDueDateStyles = (
   }
 };
 
+const getPriorityStyles = (
+  priority
+) => {
+    // console.log(priority)
+  switch (priority) {
+    case "HIGH":
+      return {
+        dot: "bg-red-500",
+        text: "text-red-400",
+        badge: "bg-red-500/10 text-red-400",
+      };
+
+    case "MEDIUM":
+      return {
+        dot: "bg-yellow-400",
+        text: "text-yellow-400",
+        badge: "bg-yellow-500/10 text-yellow-400",
+      };
+
+    case "LOW":
+      return {
+        dot: "bg-cyan-400",
+        text: "text-cyan-400",
+        badge: "bg-cyan-500/10 text-cyan-400",
+      };
+
+    default:
+      return {
+        dot: "bg-slate-500",
+        text: "text-slate-500",
+        badge: "bg-slate-500/10 text-slate-400",
+      };
+  }
+};
+
 function SortableTaskCard({task, onEditTask, onDeleteTask, }){
 
     const {attributes, listeners, setNodeRef, transform, transition, } = useSortable({id: task.id, });
     const dueStatus = getDueDateStatus(task.dueDate);
     const dueStyles = getDueDateStyles(dueStatus);
+    const priorityStyles = getPriorityStyles(task.priority);
+    // console.log(priorityStyles);
+
+//     console.log(
+//   task.title,
+//   task.priority
+// );
 
     const style = {
         transform:
@@ -79,14 +121,14 @@ function SortableTaskCard({task, onEditTask, onDeleteTask, }){
             
             
 
-            <div className="flex w-full items-center justify-between gap-4">
+            <div className="border-b border-slate-700 flex w-full items-center justify-between gap-4">
     
                 {/* Left Side: Priority Pulse Dot (Fixed Width) */}
                 <div className="inline-flex gap-2 animate-fade-in shrink-0">
                     <span className="inline-flex items-center rounded-full text-sm text-slate-500">
-                        <span className="h-2 w-4 animate-pulse rounded-full bg-cyan-400"/>
+                        <span className={`h-2 w-4 animate-pulse rounded-full ${priorityStyles.dot}`}/>
                     </span>
-                    <div className="border-b border-slate-700 pb-1">
+                    <div className="pb-1">
                         <span className="text-xs text-slate-500">
                             Task #{task.id}
                         </span>
@@ -136,10 +178,10 @@ function SortableTaskCard({task, onEditTask, onDeleteTask, }){
                 </h3>
             </div>
 
-            <p className="mt-3 text-sm text-slate-400 break-all">
+            <p className="mt-3 text-sm text-slate-400 break-all pb-2">
                 {task.description || "No description!"}
             </p>
-            <div className="flex flex-1 items-center gap-3">
+            <div className="border-t border-slate-800 pt-2 flex flex-1 items-center gap-3">
                 <span className={`h-2 w-2 rounded-full ${dueStyles.dot}`}/>
                     <div className="rounded-md bg-slate-800 px-2 py-1">
                     <span className={`text-xs font-medium ${dueStyles.text}`}>

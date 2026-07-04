@@ -4,7 +4,6 @@ import CreateBoardForm from "../features/boards/components/CreateBoardForm";
 import { useBoards } from "../features/boards/hooks/useBoards";
 import { useCreateBoard } from "../features/boards/hooks/useCreateBoard";
 import { useDeleteBoard } from "../features/boards/hooks/useDeleteBoard";
-// import { useUpdateBoard } from "../features/boards/hooks/useUpdateBoard";
 //edit board
 import { useState } from "react";
 import EditBoardModal from "../features/boards/components/EditBoardModal";
@@ -16,6 +15,8 @@ import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../features/boards/components/ui/LoadingSpinner";
 //for delete popup
 import ConfirmModal from "../features/boards/components/ui/ConfirmModel";
+//stats
+import { useDashboardStats } from "../features/dashboard/hooks/useDashboardStats";
 
 function DashBoardPage() {
   const { data: boards = [], isLoading } = useBoards();
@@ -40,6 +41,9 @@ function DashBoardPage() {
     logout();
     navigate("/");
   };
+
+  //stats
+  const { data: stats } = useDashboardStats();
 
   const handleCreateBoard = (boardData) => {
     createBoardMutation.mutate(boardData);
@@ -90,12 +94,50 @@ function DashBoardPage() {
           </p>
         </div>
 
-        <button
-          onClick={handleLogout}
-          className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
-        >
-          Logout
-        </button>
+        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+          <div className="rounded-xl bg-slate-800 px-4 py-3">
+            <p className="text-sm text-slate-400">
+              Total Boards: {" "} {stats?.totalBoards ?? 0}
+            </p>
+          </div>
+
+          <div className="rounded-xl bg-slate-800 px-4 py-3">
+            <p className="text-sm text-slate-400">
+              Total Tasks:{" "} {stats?.totalTasks ?? 0}
+            </p>
+          </div>
+
+          <div className="rounded-xl bg-slate-800 px-4 py-3">
+            <p className="text-sm text-slate-400">
+              Completed: {" "}{stats?.completedTasks ?? 0}
+            </p>
+          </div>
+
+          <div className="rounded-xl bg-slate-800 px-4 py-3">
+            <p className="text-sm text-slate-400">
+              Pending:{" "}{stats?.pendingTasks ?? 0}
+            </p>
+          </div>
+          <input
+            type="text"
+            placeholder="Search boards..."
+            className="
+              rounded-xl
+              bg-slate-800
+              px-4
+              py-3
+              text-white
+              outline-none
+              border border-slate-700
+            "
+          />
+          <button
+            onClick={handleLogout}
+            className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
+          >
+            Logout
+          </button>
+        </div>
       </div>
 
         <CreateBoardForm
@@ -103,7 +145,7 @@ function DashBoardPage() {
         />
         
 
-        <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 ">
           {boards.map((board) => (
             <BoardCard
               key={board.id}
@@ -140,9 +182,6 @@ function DashBoardPage() {
             setBoardToDelete(null);
           }}
         />
-        <p className="text-white">
-          Modal Open: {isEditOpen ? "YES" : "NO"}
-        </p>
       </div>
     
   );

@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.anuraj.kanban.board.entity.Board;
 import com.anuraj.kanban.task.entity.Task;
 import com.anuraj.kanban.task.enums.TaskStatus;
+import com.anuraj.kanban.user.entity.User;
 
 public interface TaskRepository extends JpaRepository<Task, Long> {
 	
@@ -18,4 +19,11 @@ public interface TaskRepository extends JpaRepository<Task, Long> {
 	long countByBoardAndStatus(Board board, TaskStatus status);
 	
 	Optional<Task> findById(Long id);
+	
+	int countByBoardOwner(User owner);
+	
+	int countByBoardOwnerAndStatus(
+	        User owner,
+	        TaskStatus status
+	);
 }

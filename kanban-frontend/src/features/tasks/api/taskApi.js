@@ -7,10 +7,10 @@ export const getBoardTask = async (boardId) => {
     return response.data;
 }
 
-export const createTask = async ({boardId, taskData,}) => {
+export const createTask = async ({boardId, taskData, status, }) => {
   const response = await api.post(
     `/boards/${boardId}/tasks`,
-    taskData
+    taskData,
   );
 
   return response.data;

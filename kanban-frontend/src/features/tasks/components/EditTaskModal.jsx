@@ -2,10 +2,9 @@ import { useState, useEffect } from "react";
 
 function EditTaskModal({isOpen, task, onClose, onUpdate}){
     const [title, setTitle] = useState("");
-
     const [description, setDescription] = useState("");
-
     const [dueDate, setDueDate] = useState(task?.dueDate || "");
+    const [priority, setPriority] = useState(task?.priority || "NO_PRIORITY");
 
     useEffect(() => {
         if(task){
@@ -50,6 +49,23 @@ function EditTaskModal({isOpen, task, onClose, onUpdate}){
                         rows={4}
                         className="w-full rounded bg-slate-700 p-3 text-white"
                         placeholder="Task Description"/>
+                    <div>
+                        <label className="mb-2 block text-sm text-slate-300">
+                            Priority
+                        </label>
+
+                        <select
+                            value={priority}
+                            onChange={(e) =>
+                            setPriority(e.target.value)
+                            }
+                            className="w-full rounded-lg bg-slate-800 p-2 text-white"
+                        >
+                            <option value="LOW">LOW</option>
+                            <option value="MEDIUM">MEDIUM</option>
+                            <option value="HIGH">HIGH</option>
+                        </select>
+                        </div>
 
                     <div className="flex justify-end gap-2">
                         <button
