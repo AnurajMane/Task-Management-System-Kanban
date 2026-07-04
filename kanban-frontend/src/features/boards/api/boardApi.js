@@ -18,3 +18,8 @@ export const getBoardById = async (boardId) => {
     const response = await api.get(`/boards/${boardId}`);
     return response.data;
 }
+
+export const updateBoard = async (boardId, boardData) =>{
+    const response = await api.put(`/boards/${boardId}`, boardData);
+    return response.data;
+}

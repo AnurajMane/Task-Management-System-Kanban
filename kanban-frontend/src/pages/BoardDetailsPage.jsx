@@ -14,6 +14,7 @@ import { useDeleteTask } from "../features/tasks/hooks/useDeleteTask";
 import EditTaskModal from "../features/tasks/components/EditTaskModal";
 import { DndContext } from "@dnd-kit/core";
 import { useMoveTask } from "../features/tasks/hooks/useMoveTask";
+import LoadingSpinner from "../features/boards/components/ui/LoadingSpinner";
 
 function BoardDetailsPage() {
   const { boardId } = useParams();
@@ -72,9 +73,10 @@ function BoardDetailsPage() {
   if (boardLoading || tasksLoading) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
-        <p className="text-white text-lg">
+        <LoadingSpinner/>
+        {/* <p className="text-white text-lg">
           Loading board...
-        </p>
+        </p> */}
       </div>
     );
   }
@@ -149,85 +151,106 @@ function BoardDetailsPage() {
           onClose={() => setIsEditModalOpen(false)}
           onUpdate={handleUpdateTask}
       />
-      <div className="mb-8">
-        <Link
-          to="/dashboard"
-          className="text-slate-400 hover:text-white transition"
-        >
-          ← Back to Dashboard
-        </Link>
+      <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div>
+          <Link
+            to="/dashboard"
+            className="text-slate-400 hover:text-white"
+          >
+            ← Back to Dashboard
+          </Link>
 
-        <h1 className="mt-4 text-3xl font-bold text-white">
-          {board?.name}
-        </h1>
+          <h1 className="mt-3 text-3xl font-bold text-white">
+            {board?.name}
+          </h1>
 
-        <p className="mt-2 text-slate-400">
-          {board?.description || "No description available"}
-        </p>
+          <p className="mt-2 text-slate-400">
+            {board?.description || "No description"}
+          </p>
+        </div>
+
+        <div className="rounded-xl bg-slate-800 px-4 py-3">
+          <p className="text-sm text-slate-400">
+            Total Tasks
+          </p>
+
+          <p className="text-2xl font-bold text-white">
+            {
+              (tasks?.backlog?.length || 0) +
+              (tasks?.readyForDevelopment?.length || 0) +
+              (tasks?.inProgress?.length || 0) +
+              (tasks?.inReview?.length || 0) +
+              (tasks?.blocked?.length || 0) +
+              (tasks?.done?.length || 0)
+            }
+          </p>
+        </div>
       </div>
-
+      
+      <div className="overflow-x-auto">
       {/* Kanban Columns */}
-      <DndContext
-          onDragEnd={
-            handleDragEnd
-          }
-        >
-      <div className="grid gap-4 xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
-        <KanbanColumn
-          title="BACKLOG"
-          tasks={tasks?.backlog || []}
-          columnId="BACKLOG"
-          onAddTask={() => setIsCreateModalOpen(true)}
-          onEditTask={handleEditTask}
-          onDeleteTask={handleDeleteTask}
-        />
+        <DndContext
+            onDragEnd={
+              handleDragEnd
+            }
+          >
+        <div className="grid gap-4 xl:grid-cols-6 lg:grid-cols-3 md:grid-cols-2 grid-cols-1">
+          <KanbanColumn
+            title="BACKLOG"
+            tasks={tasks?.backlog || []}
+            columnId="BACKLOG"
+            onAddTask={() => setIsCreateModalOpen(true)}
+            onEditTask={handleEditTask}
+            onDeleteTask={handleDeleteTask}
+          />
 
-        <KanbanColumn
-          title="READY FOR DEVELOPMENT"
-          tasks={tasks?.readyForDevelopment || []}
-          columnId="READY_FOR_DEVELOPMENT"
-          onAddTask={() => {}}
-          onEditTask={handleEditTask}
-          onDeleteTask={handleDeleteTask}
-        />
+          <KanbanColumn
+            title="READY FOR DEVELOPMENT"
+            tasks={tasks?.readyForDevelopment || []}
+            columnId="READY_FOR_DEVELOPMENT"
+            onAddTask={() => setIsCreateModalOpen(true)}
+            onEditTask={handleEditTask}
+            onDeleteTask={handleDeleteTask}
+          />
 
-        <KanbanColumn
-          title="IN PROGRESS"
-          tasks={tasks?.inProgress || []}
-          columnId="IN_PROGRESS"
-          onAddTask={() => {}}
-          onEditTask={handleEditTask}
-          onDeleteTask={handleDeleteTask}
-        />
+          <KanbanColumn
+            title="IN PROGRESS"
+            tasks={tasks?.inProgress || []}
+            columnId="IN_PROGRESS"
+            onAddTask={() => setIsCreateModalOpen(true)}
+            onEditTask={handleEditTask}
+            onDeleteTask={handleDeleteTask}
+          />
 
-        <KanbanColumn
-          title="IN REVIEW"
-          tasks={tasks?.inReview || []}
-          columnId="IN_REVIEW"
-          onAddTask={() => {}}
-          onEditTask={handleEditTask}
-          onDeleteTask={handleDeleteTask}
-        />
+          <KanbanColumn
+            title="IN REVIEW"
+            tasks={tasks?.inReview || []}
+            columnId="IN_REVIEW"
+            onAddTask={() => setIsCreateModalOpen(true)}
+            onEditTask={handleEditTask}
+            onDeleteTask={handleDeleteTask}
+          />
 
-        <KanbanColumn
-          title="BLOCKED"
-          tasks={tasks?.blocked || []}
-          columnId="BLOCKED"
-          onAddTask={() => {}}
-          onEditTask={handleEditTask}
-          onDeleteTask={handleDeleteTask}
-        />
+          <KanbanColumn
+            title="BLOCKED"
+            tasks={tasks?.blocked || []}
+            columnId="BLOCKED"
+            onAddTask={() => setIsCreateModalOpen(true)}
+            onEditTask={handleEditTask}
+            onDeleteTask={handleDeleteTask}
+          />
 
-        <KanbanColumn
-          title="DONE"
-          tasks={tasks?.done || []}
-          columnId="DONE"
-          onAddTask={() => {}}
-          onEditTask={handleEditTask}
-          onDeleteTask={handleDeleteTask}
-        />
+          <KanbanColumn
+            title="DONE"
+            tasks={tasks?.done || []}
+            columnId="DONE"
+            onAddTask={() => setIsCreateModalOpen(true)}
+            onEditTask={handleEditTask}
+            onDeleteTask={handleDeleteTask}
+          />
+        </div>
+        </DndContext>
       </div>
-      </DndContext>
     </div>
   );
   

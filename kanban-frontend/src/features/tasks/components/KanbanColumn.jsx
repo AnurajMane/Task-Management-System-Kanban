@@ -69,6 +69,11 @@ function KanbanColumn({
           ))}
         </div>
       </SortableContext>
+      {tasks.length === 0 && (
+        <div className="rounded-lg border border-dashed border-slate-600 p-4 text-center text-sm text-slate-500">
+          No tasks
+        </div>
+      )}
     </div>
     </DroppableColumn>
   );
