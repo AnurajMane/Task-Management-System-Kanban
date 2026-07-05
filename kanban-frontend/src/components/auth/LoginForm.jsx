@@ -47,87 +47,57 @@ function LoginForm() {
   };
 
   return (
-    <div className="flex w-full lg:w-1/2 items-center justify-center bg-white p-10">
-      <div className="w-full max-w-md">
+    <div className="flex h-full w-full lg:w-1/2 items-center justify-center bg-white p-6 sm:p-10 overflow-y-auto">
+      {/* Reduced margins so it doesn't push elements off screen */}
+      <div className="w-full max-w-md my-auto py-4">
 
-        {/* Heading */}
-        <div className="mb-10">
-          <h1 className="text-5xl font-bold text-slate-900">
+        {/* Heading - Reduced mb-10 to mb-6 */}
+        <div className="mb-6">
+          <h1 className="text-4xl font-bold text-slate-900 tracking-tight">
             Welcome Back
           </h1>
-
-          <p className="mt-3 text-slate-500">
+          <p className="mt-2 text-sm text-slate-500">
             Sign in to continue to your account
           </p>
         </div>
 
-        {/* Form */} 
-        <form
-          className="space-y-6"
-          onSubmit={handleSubmit}
-        >
+        {/* Form - Tightened space-y-6 to space-y-4 for tighter screens */}
+        <form className="space-y-4" onSubmit={handleSubmit}>
 
           {/* Email */}
           <div>
-            <label className="mb-2 block text-sm font-semibold text-slate-700">
+            <label className="mb-1.5 block text-xs font-semibold text-slate-700">
               Email Address
             </label>
-
-            <div className="flex items-center rounded-xl border border-slate-300 px-4 py-4 transition focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-100">
-
+            <div className="flex items-center rounded-xl border border-slate-300 px-4 py-3 transition focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-100">
               <FaEnvelope className="mr-3 text-slate-400" />
-
               <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full outline-none"
+                className="w-full text-sm outline-none"
                 value={email}
-                onChange={(e) =>
-                  setEmail(e.target.value)
-                }
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
           </div>
 
           {/* Password */}
           <div>
-            <label className="mb-2 block text-sm font-semibold text-slate-700">
+            <label className="mb-1.5 block text-xs font-semibold text-slate-700">
               Password
             </label>
-
-            <div className="flex items-center rounded-xl border border-slate-300 px-4 py-4 transition focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-100">
-
+            <div className="flex items-center rounded-xl border border-slate-300 px-4 py-3 transition focus-within:border-indigo-500 focus-within:ring-2 focus-within:ring-indigo-100">
               <FaLock className="mr-3 text-slate-400" />
-
               <input
-                type={
-                  showPassword
-                    ? "text"
-                    : "password"
-                }
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
-                className="w-full outline-none"
+                className="w-full text-sm outline-none"
                 value={password}
-                onChange={(e) =>
-                  setPassword(e.target.value)
-                }
+                onChange={(e) => setPassword(e.target.value)}
               />
-
-              <button
-                type="button"
-                onClick={() =>
-                  setShowPassword(
-                    !showPassword
-                  )
-                }
-              >
-                {showPassword ? (
-                  <FaEyeSlash className="text-slate-400" />
-                ) : (
-                  <FaEye className="text-slate-400" />
-                )}
+              <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <FaEyeSlash className="text-slate-400" /> : <FaEye className="text-slate-400" />}
               </button>
-
             </div>
           </div>
 
@@ -136,7 +106,7 @@ function LoginForm() {
             <button
               onClick={() => navigate("*")}
               type="button"
-              className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
+              className="text-xs font-medium text-indigo-600 hover:text-indigo-700"
             >
               Forgot Password?
             </button>
@@ -146,53 +116,33 @@ function LoginForm() {
           <button
             type="submit"
             disabled={loginMutation.isPending}
-            className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-4 font-semibold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70"
+            className="w-full rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 py-3.5 font-semibold text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-70 text-sm"
           >
-            {loginMutation.isPending
-              ? "Logging In..."
-              : "Login"}
+            {loginMutation.isPending ? "Logging In..." : "Login"}
           </button>
 
           {/* Divider */}
-          <div className="relative">
+          <div className="relative py-2">
             <div className="border-t border-slate-200"></div>
-
-            <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 bg-white px-4 text-sm text-slate-500">
+            <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-4 text-xs text-slate-400 font-medium">
               OR
             </span>
           </div>
 
           {/* Google Button */}
-          {/* <Link
-              to="/"
-              className="font-medium text-indigo-600 hover:text-indigo-500 underline-offset-4 hover:underline transition-all"
-            >
-              <button
-            type="button"
-            className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-300 py-4 font-medium transition hover:bg-slate-50"
-          >
-            <FaGoogle />
-            Continue with Google
-          </button>
-            </Link> */}
-
           <button
-            onClick={() => navigate("*")} //temp navigate to 404
+            onClick={() => navigate("*")}
             type="button"
-            className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-300 py-4 font-medium transition hover:bg-slate-50"
+            className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-300 py-3.5 font-medium text-sm transition hover:bg-slate-50 text-slate-700"
           >
-            <FaGoogle />
+            <FaGoogle className="text-red-500" />
             Continue with Google
           </button>
-          
 
           {/* Register Link */}
-          <p className="text-center text-slate-600">
+          <p className="text-center text-xs text-slate-600 pt-2">
             Don't have an account?{" "}
-            <Link
-              to="/register"
-              className="font-semibold text-indigo-600 hover:text-indigo-700"
-            >
+            <Link to="/register" className="font-semibold text-indigo-600 hover:text-indigo-700">
               Create One
             </Link>
           </p>

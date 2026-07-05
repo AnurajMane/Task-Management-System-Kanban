@@ -9,6 +9,7 @@ import {
   FiFolder, 
   FiFolderPlus 
 } from "react-icons/fi";
+import { Footer } from "../components/ui/Footer";
 
 import BoardCard from "../features/boards/components/BoardCard";
 import CreateBoardForm from "../features/boards/components/CreateBoardForm";
@@ -210,6 +211,7 @@ function DashBoardPage() {
           setBoardToDelete(null);
         }}
       />
+      <Footer/>
     </div>
   );
 }
