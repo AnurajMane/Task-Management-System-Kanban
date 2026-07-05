@@ -61,7 +61,7 @@ function LoginForm() {
           </p>
         </div>
 
-        {/* Form */}
+        {/* Form */} 
         <form
           className="space-y-6"
           onSubmit={handleSubmit}
@@ -134,6 +134,7 @@ function LoginForm() {
           {/* Forgot Password */}
           <div className="flex justify-end">
             <button
+              onClick={() => navigate("*")}
               type="button"
               className="text-sm font-medium text-indigo-600 hover:text-indigo-700"
             >
@@ -162,13 +163,28 @@ function LoginForm() {
           </div>
 
           {/* Google Button */}
-          <button
+          {/* <Link
+              to="/"
+              className="font-medium text-indigo-600 hover:text-indigo-500 underline-offset-4 hover:underline transition-all"
+            >
+              <button
             type="button"
             className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-300 py-4 font-medium transition hover:bg-slate-50"
           >
             <FaGoogle />
             Continue with Google
           </button>
+            </Link> */}
+
+          <button
+            onClick={() => navigate("*")} //temp navigate to 404
+            type="button"
+            className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-300 py-4 font-medium transition hover:bg-slate-50"
+          >
+            <FaGoogle />
+            Continue with Google
+          </button>
+          
 
           {/* Register Link */}
           <p className="text-center text-slate-600">

@@ -1,189 +1,216 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { 
+  FiLogOut, 
+  FiSearch, 
+  FiGrid, 
+  FiCheckCircle, 
+  FiClock, 
+  FiFolder, 
+  FiFolderPlus 
+} from "react-icons/fi";
+
 import BoardCard from "../features/boards/components/BoardCard";
 import CreateBoardForm from "../features/boards/components/CreateBoardForm";
+import LoadingSpinner from "../features/boards/components/ui/LoadingSpinner";
+import EditBoardModal from "../features/boards/components/EditBoardModal";
+import ConfirmModal from "../features/boards/components/ui/ConfirmModel";
 
 import { useBoards } from "../features/boards/hooks/useBoards";
 import { useCreateBoard } from "../features/boards/hooks/useCreateBoard";
 import { useDeleteBoard } from "../features/boards/hooks/useDeleteBoard";
-//edit board
-import { useState } from "react";
-import EditBoardModal from "../features/boards/components/EditBoardModal";
-
-//logout
 import { useAuth } from "../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
-
-import LoadingSpinner from "../features/boards/components/ui/LoadingSpinner";
-//for delete popup
-import ConfirmModal from "../features/boards/components/ui/ConfirmModel";
-//stats
 import { useDashboardStats } from "../features/dashboard/hooks/useDashboardStats";
 
 function DashBoardPage() {
   const { data: boards = [], isLoading } = useBoards();
-
-  console.log("BOARDS:", boards);
+  const { data: stats } = useDashboardStats();
   
   const createBoardMutation = useCreateBoard();
   const deleteBoardMutation = useDeleteBoard();
   
-  //edit/update board
   const [selectedBoard, setSelectedBoard] = useState(null);
   const [isEditOpen, setIsEditOpen] = useState(false);
-
-  //delete confirm popup
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [boardToDelete, setBoardToDelete] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
 
-  //logout
   const { logout } = useAuth();
   const navigate = useNavigate();
+
   const handleLogout = () => {
     logout();
     navigate("/");
   };
-
-  //stats
-  const { data: stats } = useDashboardStats();
 
   const handleCreateBoard = (boardData) => {
     createBoardMutation.mutate(boardData);
   };
 
   const handleDeleteBoard = (boardId) => {
-    // console.log("BOARD ID RECEIVED at DELETE:", boardId);
-    // deleteBoardMutation.mutate(boardId);
     setBoardToDelete(boardId);
     setIsDeleteOpen(true);
   };
 
   const handleEditBoard = (board) => {
-    console.log("STEP 1");
     setSelectedBoard(board);
-    console.log("STEP 2");
     setIsEditOpen(true);
-    console.log("STEP 3")
   };
 
-  //delete function
   const confirmDeleteBoard = () => {
     deleteBoardMutation.mutate(boardToDelete);
-
     setBoardToDelete(null);
     setIsDeleteOpen(false);
-  }
+  };
+
+  // Modern UI-driven client search filtering
+  const filteredBoards = boards.filter((board) =>
+    board.name?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   if (isLoading) {
     return (
-      <LoadingSpinner/>
-      // <div className="p-8 text-white">
-      //   Loading boards...
-      // </div>
+      <div className="flex min-h-screen items-center justify-center bg-zinc-950">
+        <LoadingSpinner />
+      </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 p-8">
-      <div className="mb-8 flex items-start justify-between">
-        <div>
-          <h1 className="text-4xl font-bold text-white">
+    <div className="min-h-screen bg-zinc-950 text-zinc-50 antialiased selection:bg-indigo-500/30">
+      
+      {/* Top Application Navbar */}
+      <header className="border-b border-zinc-800/80 bg-zinc-900/40 backdrop-blur-md sticky top-0 z-40 px-6 py-4">
+        <div className="mx-auto max-w-7xl flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 font-bold text-white shadow-md shadow-indigo-500/10">
+              W
+            </div>
+            <span className="font-semibold tracking-tight text-sm text-zinc-200">Workspace</span>
+          </div>
+          
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-zinc-700"
+          >
+            <FiLogOut className="text-sm" />
+            Sign out
+          </button>
+        </div>
+      </header>
+
+      <main className="mx-auto max-w-7xl px-6 py-10">
+        
+        {/* Welcome Header */}
+        <div className="mb-10">
+          <h1 className="text-3xl font-bold tracking-tight text-white">
             My Boards
           </h1>
-
-          <p className="mt-2 text-slate-400">
-            Manage your boards and organize your work efficiently.
+          <p className="mt-1.5 text-sm text-zinc-400">
+            Manage your project workspaces and prioritize deliverables efficiently.
           </p>
         </div>
 
-        <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
-          <div className="rounded-xl bg-slate-800 px-4 py-3">
-            <p className="text-sm text-slate-400">
-              Total Boards: {" "} {stats?.totalBoards ?? 0}
-            </p>
+        {/* Stats Metrics Dashboard Grid */}
+        <section className="mb-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-5 shadow-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Total Boards</span>
+              <FiFolder className="text-zinc-500 text-lg" />
+            </div>
+            <p className="mt-2 text-2xl font-bold tracking-tight text-white">{stats?.totalBoards ?? 0}</p>
           </div>
 
-          <div className="rounded-xl bg-slate-800 px-4 py-3">
-            <p className="text-sm text-slate-400">
-              Total Tasks:{" "} {stats?.totalTasks ?? 0}
-            </p>
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-5 shadow-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Total Tasks</span>
+              <FiGrid className="text-zinc-500 text-lg" />
+            </div>
+            <p className="mt-2 text-2xl font-bold tracking-tight text-white">{stats?.totalTasks ?? 0}</p>
           </div>
 
-          <div className="rounded-xl bg-slate-800 px-4 py-3">
-            <p className="text-sm text-slate-400">
-              Completed: {" "}{stats?.completedTasks ?? 0}
-            </p>
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-5 shadow-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Completed</span>
+              <FiCheckCircle className="text-emerald-500/80 text-lg" />
+            </div>
+            <p className="mt-2 text-2xl font-bold tracking-tight text-white">{stats?.completedTasks ?? 0}</p>
           </div>
 
-          <div className="rounded-xl bg-slate-800 px-4 py-3">
-            <p className="text-sm text-slate-400">
-              Pending:{" "}{stats?.pendingTasks ?? 0}
-            </p>
+          <div className="rounded-xl border border-zinc-800/80 bg-zinc-900/50 p-5 shadow-sm">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-medium text-zinc-400 uppercase tracking-wider">Pending</span>
+              <FiClock className="text-amber-500/80 text-lg" />
+            </div>
+            <p className="mt-2 text-2xl font-bold tracking-tight text-white">{stats?.pendingTasks ?? 0}</p>
           </div>
-          <input
-            type="text"
-            placeholder="Search boards..."
-            className="
-              rounded-xl
-              bg-slate-800
-              px-4
-              py-3
-              text-white
-              outline-none
-              border border-slate-700
-            "
-          />
-          <button
-            onClick={handleLogout}
-            className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
+        </section>
 
-        <CreateBoardForm
-          onCreate={handleCreateBoard}
-        />
-        
-
-        <div className="mt-8 grid gap-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 ">
-          {boards.map((board) => (
-            <BoardCard
-              key={board.id}
-              board={board}
-              onDelete={handleDeleteBoard}
-              onEdit={handleEditBoard}
+        {/* Action Controls & Search Toolbar */}
+        <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="relative flex max-w-md flex-1 items-center">
+            <FiSearch className="absolute left-3.5 text-zinc-500 text-sm pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search boards..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full rounded-lg border border-zinc-800 bg-zinc-900/60 pl-10 pr-4 py-2 text-sm text-zinc-100 placeholder-zinc-500 outline-none transition duration-200 focus:border-indigo-500 focus:bg-zinc-900"
             />
-          ))}
+          </div>
         </div>
 
-        {boards.length === 0 && (
-          <div className="mt-20 text-center">
-            <h2 className="text-xl text-white">
-              No Boards Yet
-            </h2>
-
-            <p className="mt-2 text-slate-400">
-              Create your first board to start organizing tasks.
-            </p>
+        {/* Structural Workspace Layout */}
+        <div className="space-y-8">
+          <div className="bg-zinc-900/40 border border-zinc-800/60 rounded-xl p-6">
+            <CreateBoardForm onCreate={handleCreateBoard} />
           </div>
-        )}
-        <EditBoardModal
-          board={selectedBoard}
-          isOpen={isEditOpen}
-          onClose={() => setIsEditOpen(false)}
-        />
-        <ConfirmModal
-          isOpen={isDeleteOpen}
-          title="Delete Board....!"
-          message="Are you sure you want to delete this board? This action cannot be undone....!"
-          onConfirm={confirmDeleteBoard}
-          onCancel={() => {
-            setIsDeleteOpen(false);
-            setBoardToDelete(null);
-          }}
-        />
-      </div>
-    
+
+          {/* Cards Grid */}
+          {filteredBoards.length > 0 ? (
+            <div className="grid gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              {filteredBoards.map((board) => (
+                <BoardCard
+                  key={board.id}
+                  board={board}
+                  onDelete={handleDeleteBoard}
+                  onEdit={handleEditBoard}
+                />
+              ))}
+            </div>
+          ) : (
+            /* Redesigned Empty State Container */
+            <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/10 py-20 px-4 text-center animate-fade-in">
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 shadow-inner">
+                <FiFolderPlus className="text-xl" />
+              </div>
+              <h3 className="mt-4 text-sm font-semibold text-zinc-200">No boards discovered</h3>
+              <p className="mt-1 max-w-xs text-xs text-zinc-500">
+                {searchQuery ? "Try altering your active filter query parameters." : "Get rolling by establishing your first workspace board block above."}
+              </p>
+            </div>
+          )}
+        </div>
+      </main>
+
+      {/* Modals injection */}
+      <EditBoardModal
+        board={selectedBoard}
+        isOpen={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+      />
+      
+      <ConfirmModal
+        isOpen={isDeleteOpen}
+        title="Delete Workspace Board"
+        message="Are you certain you wish to execute this deletion? All data collections mapping directly to this container workspace will be systematically eliminated."
+        onConfirm={confirmDeleteBoard}
+        onCancel={() => {
+          setIsDeleteOpen(false);
+          setBoardToDelete(null);
+        }}
+      />
+    </div>
   );
 }
 
