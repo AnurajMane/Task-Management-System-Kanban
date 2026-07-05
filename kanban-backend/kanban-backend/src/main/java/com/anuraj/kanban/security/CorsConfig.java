@@ -16,7 +16,7 @@ public class CorsConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "https://task-management-system-kanban-3neh.vercel.app/"));
 
         configuration.setAllowedMethods(
                 List.of(
