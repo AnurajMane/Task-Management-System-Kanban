@@ -1,4 +1,2 @@
 # Ignore backend metadata files
 kanban-backend/.metadata/
-kanban-backend/kanban-backend/src/main/resources/
-kanban-backend/kanban-backend/src/main/resources/application.properties

@@ -15,7 +15,7 @@ function RegisterForm() {
   const registerMutation = useRegister();
   const navigate = useNavigate();
 
-  const isLoading = registerMutation.isLoading; // Check if your hook exposes a loading state
+  const isLoading = registerMutation.isLoading; // Check if hook exposes a loading state
 
   const handleSubmit = async (e) => {
     e.preventDefault();

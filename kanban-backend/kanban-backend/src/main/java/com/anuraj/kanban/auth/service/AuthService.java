@@ -24,6 +24,7 @@ public class AuthService {
 		if(userRepository.existsByEmail(request.getEmail())) {
 			throw new RuntimeException("Email already exists");
 		}
+		System.out.println(request.getEmail() + " " + request.getPassword());
 		User user = User.builder()
 				.name(request.getName())
 				.email(request.getEmail())

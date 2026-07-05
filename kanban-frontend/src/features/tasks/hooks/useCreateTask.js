@@ -9,7 +9,10 @@ export const useCreateTask = () => {
 
         onSuccess : (_, variables) => {
             queryClient.invalidateQueries({
-                queryKey: ["tasks", variables.boardId],
+                queryKey: ["tasks", String(variables.boardId)],
+            });
+            queryClient.invalidateQueries({
+            queryKey: ["board", String(variables.boardId)],
             });
             toast.success("Task created successfully");
         },
