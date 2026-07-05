@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaGoogle, FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useRegister } from "../../hooks/useRegister";
 import toast from "react-hot-toast";
@@ -154,6 +154,24 @@ function RegisterForm() {
           >
             {isLoading ? "Creating account..." : "Create Account"}
           </button>
+
+          {/* Divider */}
+          <div className="relative">
+            <div className="border-t border-slate-200"></div>
+
+            <span className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2 bg-white px-4 text-sm text-slate-500">
+              OR
+            </span>
+          </div>
+
+          <button
+                      onClick={() => navigate("*")} //temp navigate to 404
+                      type="button"
+                      className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-300 py-4 font-medium transition hover:bg-slate-50"
+                    >
+                      <FaGoogle />
+                      Continue with Google
+                    </button>
 
           {/* Login Link */}
           <p className="text-center text-zinc-500 mt-4">

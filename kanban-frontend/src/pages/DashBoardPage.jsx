@@ -91,9 +91,9 @@ function DashBoardPage() {
           
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 rounded-lg border border-zinc-800 bg-zinc-900 px-3 py-1.5 text-xs font-medium text-zinc-400 transition hover:bg-zinc-800 hover:text-zinc-200 focus:outline-none focus:ring-2 focus:ring-zinc-700"
+            className="flex items-center gap-2 rounded-lg border border-zinc-800 bg-red-500 text-black px-3 py-1.5 text-xs font-medium transition hover:bg-red-800 hover:text-white-200 focus:outline-none focus:ring-2 focus:ring-zinc-700"
           >
-            <FiLogOut className="text-sm" />
+            <FiLogOut className="text-sm text-black" />
             Sign out
           </button>
         </div>
@@ -179,7 +179,7 @@ function DashBoardPage() {
               ))}
             </div>
           ) : (
-            /* Redesigned Empty State Container */
+            
             <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-zinc-800 bg-zinc-900/10 py-20 px-4 text-center animate-fade-in">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 shadow-inner">
                 <FiFolderPlus className="text-xl" />
