@@ -1,26 +1,28 @@
 import { FiUsers, FiTrendingUp, FiCheckSquare } from "react-icons/fi";
 import FeatureCard from "./FeatureCard";
+import DancingLogoInline from "../ui/DancingLogoInline";
 
 function LoginLeftPanel() {
   return (
-  <div className="relative hidden lg:flex lg:w-1/2 overflow-hidden bg-zinc-300 p-8 xl:p-12 text-zinc-900 border-r border-zinc-200/80 justify-center items-center h-full">
+  <div className="relative hidden lg:flex lg:w-1/2 overflow-hidden bg-zinc-300 p-8 xl:p-12 text-zinc-900 border-r border-zinc-200/80 justify-center items-center self-stretch">
     
-    {/* Premium Light Ambient Mesh Glow Effects */}
     <div className="absolute -top-[40%] -right-[20%] h-[700px] w-[700px] rounded-full bg-indigo-500/10 blur-[128px] pointer-events-none "></div>
     <div className="absolute -bottom-[30%] -left-[10%] h-[600px] w-[600px] rounded-full bg-violet-400/10 blur-[128px] pointer-events-none"></div>
 
-    {/* Flex container set to justify-between to space components dynamically */}
     <div className="relative flex h-full w-full flex-col justify-between z-10 overflow-hidden">
       
-      {/* Upper Brand Section */}
-      <div className="flex items-center gap-2.5 flex-shrink-0">
+      {/* <div className="flex items-center gap-2.5 flex-shrink-0">
         <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-indigo-600 font-bold text-white shadow-md shadow-indigo-500/20 text-sm">
           W
         </div>
         <h1 className="text-sm font-bold tracking-tight text-zinc-800 uppercase">
           Workspace
         </h1>
-      </div>
+      </div> */}
+
+      <a href="/dashboard">
+        <DancingLogoInline/>
+      </a>
 
       
       <div className="w-full max-w-xl rounded-2xl border border-zinc-200/80 bg-white/70 p-4 xl:p-6 backdrop-blur-xl shadow-xl shadow-zinc-200/40 my-4 max-h-[40vh] min-h-[220px] overflow-hidden flex flex-col justify-between">
@@ -90,8 +92,6 @@ function LoginLeftPanel() {
         </div>
       </div>
 
-      {/* Lower Value Proposition Messaging */}
-      {/* CHANGED: Swapped absolute margins for responsive padding/flex spacing */}
       <div className="flex-shrink-0 pt-2">
         <h2 className="max-w-md text-2xl xl:text-3xl font-bold tracking-tight leading-tight text-zinc-900">
           Manage your work visually, collaborate seamlessly.

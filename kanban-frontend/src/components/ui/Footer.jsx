@@ -25,7 +25,7 @@ export const Footer = () => {
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Logo & Copyright */}
           <div className="text-center md:text-left">
-            <a href="#" className="text-xl font-bold tracking-tight">
+            <a href="/contact" className="text-xl font-bold tracking-tight">
               ANURAJ
             </a>
             <p className="text-sm text-muted-foreground mt-2">

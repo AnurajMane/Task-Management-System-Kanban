@@ -14,6 +14,9 @@ import { useCreateTask } from "../features/tasks/hooks/useCreateTask";
 import { useUpdateTask } from "../features/tasks/hooks/useUpdateTask";
 import { useDeleteTask } from "../features/tasks/hooks/useDeleteTask";
 import { useMoveTask } from "../features/tasks/hooks/useMoveTask";
+import ConfirmModal from "../features/boards/components/ui/ConfirmModel";
+//footer
+import { Footer } from "../components/ui/Footer";
 //logout
 import { useAuth } from "../hooks/useAuth";
 
@@ -27,8 +30,12 @@ function BoardDetailsPage() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [boardToDelete, setBoardToDelete] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState("BACKLOG");
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [taskToDelete, setTaskToDelete] = useState(null);
 
   const updateTaskMutation = useUpdateTask();
   const deleteTaskMutation = useDeleteTask();
@@ -95,10 +102,36 @@ function BoardDetailsPage() {
     );
   };
 
+  
+  // const handleDeleteTask = (taskId) => {
+  //   if (false) {
+  //     deleteTaskMutation.mutate(taskId);
+  //   }
+  // };
   const handleDeleteTask = (taskId) => {
-    if (window.confirm("Are you sure you want to delete this task?")) {
-      deleteTaskMutation.mutate(taskId);
+    setTaskToDelete(taskId); // This opens the modal
+  };
+
+  // const handleConfirmDelete = () => {
+  //   if (taskToDelete) {
+  //     deleteTaskMutation.mutate(taskToDelete, {
+  //       onSuccess: () => {
+  //         setTaskToDelete(null); // Clean up state after successful deletion
+  //       }
+  //     });
+  //   }
+  // };
+  const handleConfirmDelete = () => {
+    if (taskToDelete) {
+      deleteTaskMutation.mutate(taskToDelete, {
+        onSuccess: () => {
+          setTaskToDelete(null); // Closes modal
+        },
+      });
     }
+  };
+  const handleCancelDelete = () => {
+    setTaskToDelete(null);
   };
 
   // Counts
@@ -111,7 +144,6 @@ function BoardDetailsPage() {
     tasks?.done,
   ].reduce((acc, col) => acc + (col?.length || 0), 0);
 
-  // Counts representing items that successfully match active criteria
   const activeMatchesCount = [
     displayedTasks.backlog,
     displayedTasks.readyForDevelopment,
@@ -190,7 +222,6 @@ function BoardDetailsPage() {
 
       <div className="mx-auto max-w-[1600px] px-6 py-8">
         
-        {/* Workspace Nav & Action Header */}
         <div className="mb-8 border-b border-zinc-800/60 pb-6 space-y-6">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <Link
@@ -243,7 +274,6 @@ function BoardDetailsPage() {
               )}
             </div>
 
-            {/* Conditional Metric badge readout */}
             <div className="inline-flex items-center gap-3.5 rounded-xl border border-zinc-800/80 bg-zinc-900/30 pl-4 pr-6 py-2.5 self-start lg:self-auto shadow-sm shadow-zinc-950/20 whitespace-nowrap">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-zinc-800 text-zinc-400 border border-zinc-700/40">
                 <FiCheckSquare className="text-sm" />
@@ -260,7 +290,6 @@ function BoardDetailsPage() {
           </div>
         </div>
 
-        {/* Scrollable Kanban columns mapped to displayedTasks state wrapper */}
         <div className="overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-zinc-800 scrollbar-track-transparent">
           <DndContext onDragEnd={handleDragEnd}>
             <div className="flex gap-4 min-w-[1240px] [&>*]:w-80 [&>*]:shrink-0">
@@ -321,16 +350,23 @@ function BoardDetailsPage() {
           </DndContext>
         </div>
 
-        {/* Empty Search Result Fallback Banner */}
         {searchQuery && activeMatchesCount === 0 && (
           <div className="mt-16 text-center py-12 border border-dashed border-zinc-800 rounded-xl max-w-xl mx-auto">
             <h3 className="text-sm font-medium text-zinc-300">No tasks match your query</h3>
             <p className="mt-1 text-xs text-zinc-500">Try adjusting your filters or refining your spelling tokens.</p>
           </div>
         )}
-
+        <Footer/>
       </div>
+      <ConfirmModal
+        isOpen={Boolean(taskToDelete)} // Opens if taskToDelete has an ID
+        title="Delete Task"
+        message="Are you certain you wish to execute this deletion? This action cannot be undone."
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setTaskToDelete(null)} // Closes modal safely
+      />
     </div>
+    
   );
 }
 

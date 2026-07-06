@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+
+/* animated logo */
+@keyframes logo-dance {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(3deg); }
+}
+
+.animate-logo-dance {
+  animation: logo-dance 0.6s ease-in-out infinite;
+}

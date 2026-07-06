@@ -16,6 +16,7 @@ import CreateBoardForm from "../features/boards/components/CreateBoardForm";
 import LoadingSpinner from "../features/boards/components/ui/LoadingSpinner";
 import EditBoardModal from "../features/boards/components/EditBoardModal";
 import ConfirmModal from "../features/boards/components/ui/ConfirmModel";
+import DancingLogoInline from "../components/ui/DancingLogoInline";
 
 import { useBoards } from "../features/boards/hooks/useBoards";
 import { useCreateBoard } from "../features/boards/hooks/useCreateBoard";
@@ -83,12 +84,16 @@ function DashBoardPage() {
       {/* Top Application Navbar */}
       <header className="border-b border-zinc-800/80 bg-zinc-900/40 backdrop-blur-md sticky top-0 z-40 px-6 py-4">
         <div className="mx-auto max-w-7xl flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-600 font-bold text-white shadow-md shadow-indigo-500/10">
               W
             </div>
             <span className="font-semibold tracking-tight text-sm text-zinc-200">Workspace</span>
-          </div>
+          </div> */}
+          <a href="/dashboard">
+            <DancingLogoInline/>
+          </a>
+
           
           <button
             onClick={handleLogout}
@@ -192,8 +197,9 @@ function DashBoardPage() {
             </div>
           )}
         </div>
+        
       </main>
-
+      <Footer/>
       {/* Modals injection */}
       <EditBoardModal
         board={selectedBoard}
@@ -211,7 +217,7 @@ function DashBoardPage() {
           setBoardToDelete(null);
         }}
       />
-      <Footer/>
+      
     </div>
   );
 }

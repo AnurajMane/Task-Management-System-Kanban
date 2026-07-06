@@ -2,6 +2,7 @@ import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, MessageSquareCode,
 import Button from "./Button";
 import { useState } from "react";
 import emailjs from "@emailjs/browser";
+import DancingLogoInline from "./DancingLogoInline";
 
 const contactInfo = [
   {
@@ -239,6 +240,9 @@ export const Contact = () => {
           </div>
         </div>
       </div>
+
+{/* <DancingLogoInline/> */}
+
     </section>
   );
 };

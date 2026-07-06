@@ -41,9 +41,8 @@ function RegisterForm() {
   };
 
   return (
-    <div className="flex w-full lg:w-1/2 items-center justify-center bg-white p-10">
-
-      <div className="w-full max-w-md">
+    <div className="flex h-full w-full lg:w-1/2 items-center justify-center bg-white p-6 sm:p-10 overflow-y-auto">
+      <div className="w-full max-w-md my-auto py-4">
         
         {/* Header Section */}
         <div className="mb-8">
